@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{'Produits' | trans}}{% endblock %}
+
+
+{% block body %}
+<div class="container mt-5">
+    <div class="row">
+
+
+            <table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">{{'Photo' | trans}}</th>
+      <th scope="col">{{'Produit' | trans}}</th>
+      <th scope="col">{{'Quantité' | trans}}</th>
+      <th scope="col">{{'Prix' | trans}}</th>
+    </tr>
+  </thead>
+  
+  <tbody>
+  {% if produits is empty %}
+  <tr><td>{{" Aucun produit d'enregistré actuellement" | trans}}</td><td></td><td></td><td></td> </tr>
+                    {% else %}
+    {% for produit in produits %}
+    <tr>
+      <th scope="row"><img src="{{ asset('upload/images/' ~ produit.photo)}}" class="img-thumbnail" style="width:100px;" alt="{{produit.nom}}"></th>
+      <td> <a href="{{path('singleProduit', {id: produit.id})}}"><button class="btn btn-primary">{{produit.nom}}</button></a></td>
+      <td><p>{{produit.quantite}}</p></td>
+      <td><p>{{produit.prix}}€</p></td>
+    </tr>
+    
+    {% endfor %}
+    {% endif %}
+
+    
+  </tbody>
+</table>
+
+
+
+    </div>
+    <h1 class="row">{{'Ajouter un produit' | trans}}</h1>
+    
+    <div class="row">
+        {{form_start(produitForm)}}
+        {{form_end(produitForm)}}
+    </div>
+</div>
+{% endblock %}

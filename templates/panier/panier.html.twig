@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{"Panier" | trans}}{% endblock %}
+
+
+{% block body %}
+<div class="container mt-5">
+
+  <h1>{{"Contenu du panier" | trans}} :</h1>
+  <div class="row">
+
+
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">{{'Produit' | trans}}</th>
+          <th scope="col">{{'Quantité' | trans}}</th>
+          <th scope="col">{{'Montant total' | trans}}</th>
+          <th scope="col"></th>
+        </tr>
+      </thead>
+
+      <tbody>
+        {% if panier is empty %}
+        <tr>
+          <td> {{"Aucun produit d'enregistré actuellement" | trans}}</td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+        {% else %}
+        {% set montantTotal = 0 %}
+        {% for panierline in panier %}
+        <tr>
+          <td>{{panierline.produit.nom}}</td>
+          <td>
+            <p>{{panierline.quantite}}</p>
+          </td>
+          {% set montant = ((panierline.produit.prix) * (panierline.quantite)) %}
+          {% set montantTotal = (montant) + montantTotal %}
+          <td>
+            <p>{{montant}} €</p>
+          </td>
+          <td>
+            <a href="{{path('deletePanierLine', {id: panierline.id})}}"><button
+                class="btn btn-danger">{{'Supprimer' | trans}}</button></a></td>
+        </tr>
+
+        {% endfor %}
+        
+        <tr>
+          <th scope="col"> <a href="{{path('deletePanier')}}"> <button class="btn btn-success">{{'payer'  | trans}} {{ panier | length}} {{'produits' | trans}}</button></a></th>
+
+          <th scope="col"></th>
+          <th scope="col">{{montantTotal}} €</th>
+          <th scope="col"></th>
+        </tr>
+{% endif %}
+      </tbody>
+    </table>
+
+
+
+  </div>
+</div>
+{% endblock %}
